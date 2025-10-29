@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clipboard</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        What's the Context
+      </h1>
+      <button id="clearAllBtn" class="btn-secondary" title="Clear all items" aria-label="Clear all clipboard items">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+      </button>
+    </header>
+
+    <div id="aiStatusBanner" class="ai-status-banner hidden">
+      <div class="ai-status-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <div class="ai-status-text">
+        <strong>AI Features Unavailable</strong>
+        <span id="aiStatusMessage">Gemini Nano is not installed</span>
+      </div>
+    </div>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Search clipboard..."
+          autocomplete="off"
+        />
+        <button id="clearSearch" class="clear-search-btn hidden" title="Clear search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">
+          <span>All</span>
+          <span class="filter-count" id="countAll">0</span>
+        </button>
+        <button class="filter-btn" data-filter="copy">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>Copied</span>
+          <span class="filter-count" id="countCopy">0</span>
+        </button>
+        <button class="filter-btn" data-filter="highlight">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          <span>Highlights</span>
+          <span class="filter-count" id="countHighlight">0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sessions-section">
+      <div class="sessions-header">
+        <h2 class="section-subtitle">Sessions</h2>
+        <div class="sessions-actions">
+          <button id="saveTabsSessionBtn" class="btn-small btn-primary" title="Save current tabs as session">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Save Tabs
+          </button>
+          <button id="groupTabsBtn" class="btn-small btn-primary" title="Group open tabs by context">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            Group Tabs
+          </button>
+          <button id="newSessionBtn" class="btn-small btn-primary" title="Create new session">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            New Session
+          </button>
+        </div>
+      </div>
+      
+      <div id="sessionsList" class="sessions-list"></div>
+    </div>
+
+    <div id="currentItem" class="current-item hidden">
+      <div class="item-header">
+        <span class="item-label">Current Selection</span>
+        <button id="closeCurrentBtn" class="btn-icon" aria-label="Close current item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div id="currentText" class="text-content"></div>
+
+      <div class="ai-status hidden" id="aiStatus">
+        <div class="spinner"></div>
+        <span id="aiStatusText">Processing...</span>
+      </div>
+
+      <div class="action-grid">
+        <button class="action-btn" data-action="copyOriginal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>Copy Original</span>
+        </button>
+
+        <button class="action-btn" data-action="copyClean">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="9 12 12 15 15 10"></polyline>
+          </svg>
+          <span>Copy Clean</span>
+        </button>
+
+        <button class="action-btn" data-action="summarize" data-requires-ai="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+          </svg>
+          <span>Summarize</span>
+        </button>
+
+        <button class="action-btn" data-action="rephrase" data-requires-ai="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          <span>Rephrase</span>
+        </button>
+
+        <button class="action-btn" data-action="proofread" data-requires-ai="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <span>Proofread</span>
+        </button>
+
+        <div class="translate-container">
+          <button class="action-btn" data-action="translate" data-requires-ai="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span>Translate</span>
+          </button>
+          <select id="translateLang" class="translate-lang-select" title="Select translation language">
+            <option value="es">Spanish</option>
+            <option value="en">English</option>
+            <option value="ja">Japanese</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="zh">Chinese</option>
+            <option value="ar">Arabic</option>
+            <option value="hi">Hindi</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="history-section">
+      <h2 class="section-title">Clipboard History</h2>
+      <div id="historyList" class="history-list">
+        <div class="empty-state">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <p>No items yet</p>
+          <p class="empty-subtitle">Select text on any webpage to get started</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sessionModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Create New Session</h3>
+        <button class="btn-icon" id="closeModal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="sessionName" class="modal-input" placeholder="Session name..." />
+        <textarea id="sessionDescription" class="modal-textarea" placeholder="Description (optional)..." rows="3"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="cancelModal">Cancel</button>
+        <button class="btn-primary" id="saveSession">Create Session</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="groupingProgress" class="grouping-progress hidden">
+    <div class="progress-content">
+      <div class="spinner"></div>
+      <div class="progress-text">
+        <strong id="progressTitle">Analyzing tabs...</strong>
+        <span id="progressSubtitle">Detecting topics with AI</span>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+  </div>
+
+  <script src="sidepanel.js" type="module"></script>
+</body>
+</html>
