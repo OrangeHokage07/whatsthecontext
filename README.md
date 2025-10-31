@@ -198,8 +198,9 @@ Sessions persist indefinitely and can be restored anytime.
 Click Group Tabs
 AI analyzes open tabs and clusters by topic.
 
-Data Models
 ```
+Data Models
+
 {
   id: string,
   text: string,
