@@ -1,13 +1,13 @@
 export class TabGrouper {
   constructor() {
     this.sessionCache = null;
-    this.similarityThreshold = 0.6;
+    this.similarityThreshold = 0.5;
   }
 
   async groupOpenTabs() {
     try {
       const tabs = await chrome.tabs.query({ currentWindow: true });
-
+      
       const validTabs = tabs.filter(tab => 
         tab.url && 
         !tab.url.startsWith('chrome://') && 
@@ -81,7 +81,7 @@ export class TabGrouper {
 
         if (results && results[0] && results[0].result) {
           const result = results[0].result;
-
+          
           if (result.title || result.text || result.headings) {
             contents.push({
               tab: tab,
@@ -96,7 +96,7 @@ export class TabGrouper {
         }
       } catch (error) {
         console.warn(`Failed to extract content from tab ${tab.id} (${tab.title}):`, error.message);
-
+        
         contents.push({
           tab: tab,
           title: tab.title || 'Untitled',
@@ -125,13 +125,12 @@ export class TabGrouper {
         return this.fallbackGrouping(tabContents);
       }
 
-const session = await LanguageModel.create({
-  language: 'en',
-  outputLanguage: 'en', 
-  temperature: 0.3,
-  topK: 1
-});
-
+      const session = await LanguageModel.create({
+        language: 'en',
+        outputLanguage: 'en',
+        temperature: 0.3,
+        topK: 1
+      });
 
       console.log('🔍 Analyzing tab topics...');
       
@@ -169,16 +168,23 @@ Headings: ${content.headings || 'None'}
 Content: ${content.text.substring(0, 300)}
 `.trim();
 
-      const prompt = `In 3-5 words, what is the SPECIFIC topic of this webpage? Be precise.
+      const prompt = `What is the MAIN SUBJECT of this webpage in 2-4 words? Be specific about the topic, not the category.
+
+Examples:
+- "Koala facts and habitat" → "Koala"
+- "Formula 1 2024 season" → "Formula 1"
+- "React Performance Tips" → "React Development"
+- "Python Machine Learning" → "Python ML"
+- "SpaceX Starship Launch" → "SpaceX"
 
 ${context}
 
-Topic:`;
+Main Subject:`;
 
       const result = await session.prompt(prompt);
       const topic = result.trim();
       
-      console.log(`📄 ${content.title.substring(0, 40)} → Topic: ${topic}`);
+      console.log(`📄 ${content.title.substring(0, 40)} → Subject: ${topic}`);
       return topic;
     } catch (error) {
       console.error('Topic extraction failed:', error);
@@ -235,11 +241,18 @@ Topic:`;
   async areTopicsSimilar(session, topic1, topic2) {
     try {
       const similarity = this.calculateStringSimilarity(topic1, topic2);
-      
-      if (similarity > 0.8) return true;
+
+      if (similarity > 0.7) return true;
       if (similarity < 0.2) return false;
 
-      const prompt = `Are these two topics about the same specific subject? Answer only YES or NO.
+      const prompt = `Are these two topics about the SAME SPECIFIC SUBJECT? Answer only YES or NO.
+
+Important:
+- "Koala" and "Panda" → NO (different animals)
+- "Formula 1" and "Formula E" → NO (different racing series)
+- "React" and "Vue" → NO (different frameworks)
+- "Koala" and "Koala habitat" → YES (same subject)
+- "Formula 1 2024" and "F1 Lewis Hamilton" → YES (same subject)
 
 Topic 1: ${topic1}
 Topic 2: ${topic2}
@@ -260,8 +273,8 @@ Answer:`;
     const s1 = str1.toLowerCase();
     const s2 = str2.toLowerCase();
     
-    const words1 = new Set(s1.split(/\s+/).filter(w => w.length > 3));
-    const words2 = new Set(s2.split(/\s+/).filter(w => w.length > 3));
+    const words1 = new Set(s1.split(/\s+/).filter(w => w.length > 2));
+    const words2 = new Set(s2.split(/\s+/).filter(w => w.length > 2));
     
     if (words1.size === 0 || words2.size === 0) return 0;
     
@@ -297,7 +310,7 @@ Answer:`;
   async applyTabGroups(groups) {
     try {
       console.log('📌 Creating tab groups...');
-
+      
       try {
         const existingGroups = await chrome.tabGroups.query({});
         for (const group of existingGroups) {
