@@ -273,15 +273,20 @@ Testing Checklist
 - Sessions save/restore correctly
 - Tab grouping performs within 20 s
 
-Debugging Shortcuts
+**Debugging Shortcuts**
+
 Service Worker Console: chrome://extensions/ → click service worker link
+
 Content Script Console: Inspect any webpage (F12)
+
 Side Panel Console: Right-click inside panel → “Inspect”
 
-Contributors
-Pratyush Tiwary — Project Lead & Developer
+**Contributors**
+Pratyush Kumar Tiwary — Project Lead & Developer
+
 Manan Bhutiani — Pipeline Manager & Full-Stack Developer
+
 Saswat Sharma — Prompt Engineer & Troubleshoot Handler
 
-License
+**License**
 This project is licensed under the MIT License — feel free to fork, modify, and build upon it with attribution.
