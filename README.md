@@ -282,6 +282,7 @@ Content Script Console: Inspect any webpage (F12)
 Side Panel Console: Right-click inside panel → “Inspect”
 
 **Contributors**
+
 Pratyush Kumar Tiwary — Project Lead & Developer
 
 Manan Bhutiani — Pipeline Manager & Full-Stack Developer
