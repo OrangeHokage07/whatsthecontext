@@ -160,10 +160,12 @@ Step 3 — Confirm Functionality
   const result = await session.prompt("Hello");
   console.log('Response:', result);
 })();
+```
 Installation
-From Source
+```
 git clone https://github.com/yourusername/whats-the-context.git
 cd whats-the-context
+```
 Open chrome://extensions/
 Toggle Developer Mode (top-right)
 Click Load unpacked
