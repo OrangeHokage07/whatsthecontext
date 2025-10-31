@@ -199,8 +199,7 @@ Click Group Tabs
 AI analyzes open tabs and clusters by topic.
 
 Data Models
-Clipboard Item
-
+```
 {
   id: string,
   text: string,
@@ -232,7 +231,7 @@ Tab Group
   tabs: ChromeTab[],
   topic: string
 }
-
+```
 Challenges We Ran Into:
 - Integrating Gemini Nano within Manifest V3 restrictions.
 - Ensuring real-time clipboard capture without interfering with user copy behavior.
@@ -278,8 +277,8 @@ Side Panel Console: Right-click inside panel → “Inspect”
 
 Contributors
 Pratyush Tiwary — Project Lead & Developer
-Manan Bhutiani
-Saswat Sharma
+Manan Bhutiani — Pipeline Manager & Full-Stack Developer
+Saswat Sharma — Prompt Engineer & Troubleshoot Handler
 
 License
 This project is licensed under the MIT License — feel free to fork, modify, and build upon it with attribution.
