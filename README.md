@@ -1,11 +1,11 @@
-# 🧠 What's the Context
+# What's the Context
 
 **What’s the Context** is a Chrome extension that transforms how researchers, students, and knowledge workers gather and organize information online.  
 Built on **Chrome for Developers’ experimental Gemini Nano AI**—which runs entirely **on-device** for privacy—this extension serves as an intelligent research companion that understands **what you copy, why it matters,** and **how it connects** to your broader goals.
 
 ---
 
-## 🌟 Inspiration
+## Inspiration
 
 Modern research workflows are messy and fragmented:
 
@@ -18,7 +18,7 @@ We envisioned a smarter browser experience—one that **remembers context**, **p
 
 ---
 
-## 💡 What It Does
+## What It Does
 
 ### Intelligent Clipboard Management
 - Captures copied text automatically with **source URL**, **title**, and **timestamp**.
@@ -45,13 +45,13 @@ We envisioned a smarter browser experience—one that **remembers context**, **p
 - Export/import capabilities planned for future versions.
 
 ### Multi-Color Highlighting
-- 5 color options: 🟡 Yellow | 🟢 Green | 🔵 Blue | 💗 Pink | 🟤 Gold  
+- 5 color options: Yellow | Green | Blue | Pink | Gold  
 - Highlights persist across sessions and refreshes.  
 - Simple floating toolbar with click-to-remove functionality.
 
 ---
 
-## 🛠️ How We Built It
+##  How We Built It
 
 ### Core Architecture
 ```
@@ -110,18 +110,16 @@ Tabs clustered by semantic similarity
 ↓
 Chrome tab groups auto-created + color-coded
 
-
-
 ---
 
-## ⚙️ Technology Stack
+##  Technology Stack
 
-| Technology | Version | Purpose |
-|-------------|----------|----------|
-| **JavaScript (ES6+)** | – | Core logic |
-| **HTML5 / CSS3** | – | UI structure and styling |
-| **Chrome Extension API (MV3)** | – | Browser integration |
-| **Gemini Nano (Experimental)** | – | On-device AI text processing |
+| Technology | Purpose |
+|-------------|----------|
+| **JavaScript (ES6+)** | Core logic |
+| **HTML5 / CSS3** | UI structure and styling |
+| **Chrome Extension API (MV3)** | Browser integration |
+| **Gemini Nano (Experimental)** | On-device AI text processing |
 
 ### Chrome APIs Used
 - `chrome.storage.local` — Persistent data (10MB quota)
@@ -133,9 +131,9 @@ Chrome tab groups auto-created + color-coded
 
 ---
 
-## 🧩 Gemini Nano Setup
+## Gemini Nano Setup
 
-> ⚠️ One-time setup required before enabling AI features.
+>  One-time setup required before enabling AI features.
 
 ### Step 1 — Enable Flags
 1. Go to `chrome://flags`
@@ -162,57 +160,43 @@ Step 3 — Confirm Functionality
   const result = await session.prompt("Hello");
   console.log('Response:', result);
 })();
-🧰 Installation
+Installation
 From Source
 git clone https://github.com/yourusername/whats-the-context.git
 cd whats-the-context
 Open chrome://extensions/
-
 Toggle Developer Mode (top-right)
-
 Click Load unpacked
-
 Select the project folder
-
 Verify the extension loads successfully
 
-🚀 Usage Guide
+Usage Guide
 1. Capturing Text
 Select text → Press Ctrl+C / Cmd+C
-
 Captured automatically with source URL and timestamp.
 
 2. Highlighting
 Select text → Choose color from floating toolbar.
-
 Persistent across refreshes. Click to remove.
 
 3. AI Actions
 Open the side panel → click any item → choose:
-
 Summarize
-
 Rephrase
-
 Proofread
-
 Translate
-
 Processing time: 2–20 seconds depending on text length.
 
 4. Research Sessions
 “Save Tabs” → Create named session with all open tabs.
-
 “Add to Session” → Attach clipboard items to a session.
-
 Sessions persist indefinitely and can be restored anytime.
 
 5. Group Tabs
 Click Group Tabs
-
 AI analyzes open tabs and clusters by topic.
 
-🧱 Data Models
+Data Models
 Clipboard Item
 
 {
@@ -246,75 +230,54 @@ Tab Group
   tabs: ChromeTab[],
   topic: string
 }
-🧩 Challenges We Ran Into
-Integrating Gemini Nano within Manifest V3 restrictions.
 
-Ensuring real-time clipboard capture without interfering with user copy behavior.
+Challenges We Ran Into:
+- Integrating Gemini Nano within Manifest V3 restrictions.
+- Ensuring real-time clipboard capture without interfering with user copy behavior.
+- Managing persistent highlights across sessions efficiently.
+- Designing a fast, lightweight AI processing layer under Chrome’s local storage constraints.
 
-Managing persistent highlights across sessions efficiently.
+Accomplishments We’re Proud Of:
+- Fully on-device AI integration — zero data leaves the user’s machine.
+- Seamless real-time clipboard tracking with auto attribution.
+- Beautifully designed side panel UI for distraction-free research.
+- Scalable architecture ready for cloud-sync and collaboration in future.
 
-Designing a fast, lightweight AI processing layer under Chrome’s local storage constraints.
+What We Learned:
+- Working with Gemini Nano and the Chrome Dev experimental APIs.
+- Designing asynchronous, reactive systems with Service Workers and Side Panels.
+- Managing privacy-first AI workflows entirely on-device.
+- The art of merging usability, context-awareness, and AI intelligence.
 
-🏆 Accomplishments We’re Proud Of
-Fully on-device AI integration — zero data leaves the user’s machine.
+What’s Next for What’s the Context:
+- Cloud Sync between devices.
+- Collaborative Sessions for group research.
+- Context Graphs — visualize knowledge connections.
+- Export/Import Sessions (JSON/Markdown formats).
+- Custom AI Models integration for domain-specific research.
 
-Seamless real-time clipboard tracking with auto attribution.
-
-Beautifully designed side panel UI for distraction-free research.
-
-Scalable architecture ready for cloud-sync and collaboration in future.
-
-📚 What We Learned
-Working with Gemini Nano and the Chrome Dev experimental APIs.
-
-Designing asynchronous, reactive systems with Service Workers and Side Panels.
-
-Managing privacy-first AI workflows entirely on-device.
-
-The art of merging usability, context-awareness, and AI intelligence.
-
-🚀 What’s Next for What’s the Context
-🌐 Cloud Sync between devices.
-
-🤝 Collaborative Sessions for group research.
-
-🧭 Context Graphs — visualize knowledge connections.
-
-📤 Export/Import Sessions (JSON/Markdown formats).
-
-🧩 Custom AI Models integration for domain-specific research.
-
-🧪 Development & Testing
+Development & Testing
 Development Setup
 git clone https://github.com/yourusername/whats-the-context.git
 cd whats-the-context
 No dependencies — pure JavaScript.
 
 Testing Checklist
-✅ Clipboard capture working
-
-✅ AI processing available
-
-✅ Highlights persist across reloads
-
-✅ Sessions save/restore correctly
-
-✅ Tab grouping performs within 20 s
+- Clipboard capture working
+- AI processing available
+- Highlights persist across reloads
+- Sessions save/restore correctly
+- Tab grouping performs within 20 s
 
 Debugging Shortcuts
 Service Worker Console: chrome://extensions/ → click service worker link
-
 Content Script Console: Inspect any webpage (F12)
-
 Side Panel Console: Right-click inside panel → “Inspect”
 
-🖼️ Screenshots (Optional Section for GitHub Presentation)
-Add screenshots or GIFs demonstrating clipboard capture, side panel interface, and AI summarization in action.
-
-👥 Contributors
+Contributors
 Pratyush Tiwary — Project Lead & Developer
+Manan Bhutiani
+Saswat Sharma
 
-[Add your collaborators here]
-
-⚖️ License
+License
 This project is licensed under the MIT License — feel free to fork, modify, and build upon it with attribution.
