@@ -258,10 +258,13 @@ What’s Next for What’s the Context:
 - Export/Import Sessions (JSON/Markdown formats).
 - Custom AI Models integration for domain-specific research.
 
-Development & Testing
-Development Setup
+Development & Testing:
+
+Development Setup:
+```
 git clone https://github.com/yourusername/whats-the-context.git
 cd whats-the-context
+```
 No dependencies — pure JavaScript.
 
 Testing Checklist
