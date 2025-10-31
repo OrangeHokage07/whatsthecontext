@@ -260,7 +260,6 @@ What’s Next for What’s the Context:
 
 Development & Testing:
 
-Development Setup:
 ```
 git clone https://github.com/yourusername/whats-the-context.git
 cd whats-the-context
